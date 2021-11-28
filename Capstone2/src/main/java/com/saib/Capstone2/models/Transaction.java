@@ -11,12 +11,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
 @Entity 
-@Table(name="transaction")
+@Table(name="transactions")
 public class Transaction {
 
 	@Id
-	@Column (name ="transaction_id", unique = true)
-	private long transaction_id	;
+	@Column (name ="transaction_id")
+	private long transactionId	;
 
 	@Column (name ="from_account")
 	private long from_account	;
@@ -60,7 +60,7 @@ public class Transaction {
 			String to_account_name, String same_bank_transaction, String other_bank_transaction, double amount,
 			LocalDate date, LocalTime time, String transaction_type, String status) {
 		super();
-		this.transaction_id = transaction_id;
+		this.transactionId = transaction_id;
 		this.from_account = from_account;
 		this.to_account = to_account;
 		this.from_account_name = from_account_name;
@@ -75,11 +75,11 @@ public class Transaction {
 	}
 
 	public long getTransaction_id() {
-		return transaction_id;
+		return transactionId;
 	}
 
 	public void setTransaction_id(long transaction_id) {
-		this.transaction_id = transaction_id;
+		this.transactionId = transaction_id;
 	}
 
 	public long getFrom_account() {
@@ -172,7 +172,7 @@ public class Transaction {
 
 	@Override
 	public String toString() {
-		return "Transaction [transaction_id=" + transaction_id + ", from_account=" + from_account + ", to_account="
+		return "Transaction [transaction_id=" + transactionId + ", from_account=" + from_account + ", to_account="
 				+ to_account + ", from_account_name=" + from_account_name + ", to_account_name=" + to_account_name
 				+ ", same_bank_transaction=" + same_bank_transaction + ", other_bank_transaction="
 				+ other_bank_transaction + ", amount=" + amount + ", date=" + date + ", time=" + time

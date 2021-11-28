@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.saib.Capstone2.config.ApiSuccessPayload;
@@ -91,7 +92,19 @@ public class AccountController {
 	}
 	
 	
+
+
+@GetMapping("/accounts/all/sorted")
+public ResponseEntity<ApiSuccessPayload> getAllAccounts(@RequestParam int pageNumber,
+		                                                 @RequestParam int pageSize,
+		                                                 @RequestParam String sortBy)
+{
+	List<Account> list=accountService.getAllAccount(pageNumber, pageSize, sortBy);
+	HttpStatus status=HttpStatus.OK;
+	ApiSuccessPayload payload=ApiSuccessPayload.build(list, "Accounts Found",status);
+	ResponseEntity<ApiSuccessPayload> response=new ResponseEntity<ApiSuccessPayload>(payload, status);
+	return response;
 	
-	
+}
 
 }

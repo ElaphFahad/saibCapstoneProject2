@@ -7,6 +7,10 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -101,5 +105,29 @@ public class AccountService {
 		
 		
 	}
+	
+	
+	public List<Account> getAllAccount(Integer pageNo,Integer pageSize ,String sortBy)
+	{
+		Pageable paging=PageRequest.of(pageNo,pageSize, Sort.by(sortBy));
+		
+		Page<Account> pagedResult=accountRepository.findAll(paging);
+		int totalElement=pagedResult.getNumberOfElements();
+		int total=pagedResult.getTotalPages();
+		
+		System.out.println("Total Number of pages are:"+total+"| Total Elements:"+totalElement);
+	
+		
+		if(pagedResult.hasContent())
+		{
+			return pagedResult.getContent();
+		}
+		else
+		{
+			return new ArrayList<Account>();
+		}
+		
+	}
+	
 
 }

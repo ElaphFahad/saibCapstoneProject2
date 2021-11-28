@@ -11,9 +11,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.saib.Capstone2.config.ApiSuccessPayload;
+import com.saib.Capstone2.config.ApiSuccessTransaction;
+import com.saib.Capstone2.models.Account;
 import com.saib.Capstone2.models.Transaction;
 import com.saib.Capstone2.service.TransactionService;
 import com.saib.Capstone2.util.Results;
@@ -35,67 +38,82 @@ public class TransactionController {
 	
 	
 	@GetMapping("/transactions")
-	public ResponseEntity<ApiSuccessPayload> getAllTransactions()
+	public ResponseEntity<ApiSuccessTransaction> getAllTransactions()
 	{
 		List<Transaction> list=transactionService.getAllTransaction();
 		
-		ApiSuccessPayload payload=ApiSuccessPayload.build(list, "Transaction Fetched", HttpStatus.OK);
-		ResponseEntity<ApiSuccessPayload> response=new ResponseEntity<ApiSuccessPayload>(payload,HttpStatus.OK);
+		ApiSuccessTransaction payload=ApiSuccessTransaction.build(list, "Transaction Fetched", HttpStatus.OK);
+		ResponseEntity<ApiSuccessTransaction> response=new ResponseEntity<ApiSuccessTransaction>(payload,HttpStatus.OK);
 		
 		return response;
 		
 	}
 	
-	@GetMapping("/transactions/{transaction_id}")
-	public ResponseEntity<ApiSuccessPayload> getTransactionByTransaction_id(@PathVariable long transaction_id)
+	@GetMapping("/transactions/{transactionId}")
+	public ResponseEntity<ApiSuccessTransaction> getTransactionByTransactionId(@PathVariable long transactionId)
 	{
-		Transaction transaction=transactionService.getTransactionByTransaction_id(transaction_id);
+		Transaction transaction=transactionService.getTransactionByTransactionId(transactionId);
 		
-		ApiSuccessPayload payload=ApiSuccessPayload.build(transaction, "Success",HttpStatus.OK);
-		ResponseEntity<ApiSuccessPayload> response=new ResponseEntity<ApiSuccessPayload>(payload,HttpStatus.OK);
+		ApiSuccessTransaction payload=ApiSuccessTransaction.build(transaction, "Success",HttpStatus.OK);
+		ResponseEntity<ApiSuccessTransaction> response=new ResponseEntity<ApiSuccessTransaction>(payload,HttpStatus.OK);
 		return response;
 	}
 	
-	@GetMapping("/transactions/{transaction_type}")
-	public ResponseEntity<ApiSuccessPayload> getTransactionByTransaction_type(@PathVariable String transaction_type)
+	@GetMapping("/transactions/{transactionType}")
+	public ResponseEntity<ApiSuccessTransaction> getTransactionByTransactionType(@PathVariable String transactionType)
 	{
-		Transaction transaction=transactionService.getTransactionByTransaction_type(transaction_type);
-		ApiSuccessPayload payload=ApiSuccessPayload.build(transaction, "Success",HttpStatus.OK);
-		ResponseEntity<ApiSuccessPayload> response=new ResponseEntity<ApiSuccessPayload>(payload,HttpStatus.OK);
+		Transaction transaction=transactionService.getTransactionByTransactionType(transactionType);
+		ApiSuccessTransaction payload=ApiSuccessTransaction.build(transaction, "Success",HttpStatus.OK);
+		ResponseEntity<ApiSuccessTransaction> response=new ResponseEntity<ApiSuccessTransaction>(payload,HttpStatus.OK);
 		return response;
 	}
 	
 	@PostMapping("/transaction")
-	public ResponseEntity<ApiSuccessPayload> addTransaction(@RequestBody Transaction transaction)
+	public ResponseEntity<ApiSuccessTransaction> addTransaction(@RequestBody Transaction transaction)
 	{
-		ResponseEntity<ApiSuccessPayload> response=null;
+		ResponseEntity<ApiSuccessTransaction> response=null;
 		System.out.println(transaction);
 		String result=transactionService.addTransaction(transaction);
 		if(result.equalsIgnoreCase(Results.SUCCESS))
 		{
-			ApiSuccessPayload payload=ApiSuccessPayload.build(result, "Transaction created successfully", HttpStatus.CREATED);
-			response=new ResponseEntity<ApiSuccessPayload>(payload,HttpStatus.CREATED);
+			ApiSuccessTransaction payload=ApiSuccessTransaction.build(result, "Transaction created successfully", HttpStatus.CREATED);
+			response=new ResponseEntity<ApiSuccessTransaction>(payload,HttpStatus.CREATED);
 		}
 		
 		return response;
 	
 	}
 	
-	@PutMapping("/delete/{transaction_id}")
-	public ResponseEntity<ApiSuccessPayload> updateTransaction(@RequestBody Transaction transaction, @PathVariable long transaction_id)
+	@PutMapping("/delete/{transactionId}")
+	public ResponseEntity<ApiSuccessTransaction> updateTransaction(@RequestBody Transaction transaction, @PathVariable long transactionId)
 	{
 		return null;
 	}
 	
-	@DeleteMapping("/transaction/{transaction_id}")
-	public ResponseEntity<ApiSuccessPayload> deleteTransaction(@PathVariable long transaction_id)
+	@DeleteMapping("/transaction/{transactionId}")
+	public ResponseEntity<ApiSuccessTransaction> deleteTransaction(@PathVariable long transactionId)
 	{
 		return null;
 	}
+
+@GetMapping("/transactions/all/sorted")
+public ResponseEntity<ApiSuccessPayload> getAllAccounts(@RequestParam int pageNumber,
+		                                                 @RequestParam int pageSize,
+		                                                 @RequestParam String sortBy)
+{
+	List<Transaction> list=transactionService.getAllTransaction(pageNumber, pageSize, sortBy);
+	HttpStatus status=HttpStatus.OK;
+	ApiSuccessPayload payload=ApiSuccessPayload.build(list, "Accounts Found",status);
+	ResponseEntity<ApiSuccessPayload> response=new ResponseEntity<ApiSuccessPayload>(payload, status);
+	return response;
+	
+}
+
+}
 	
 	
 	
 
-}
+
 
 
