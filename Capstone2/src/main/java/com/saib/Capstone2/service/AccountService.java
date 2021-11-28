@@ -6,12 +6,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.saib.Capstone2.models.Account;
 import com.saib.Capstone2.repository.AccountRepository;
+
 import com.saib.Capstone2.util.Results;
 
 @Service
@@ -20,6 +22,12 @@ public class AccountService {
 	@Autowired
 	AccountRepository accountRepository;
 	
+	
+	public AccountService(@Qualifier("Account")AccountRepository repository) {
+		this.accountRepository=repository;
+		// TODO Auto-generated constructor stub
+	}
+
 	public List<Account> getAllAccount()
 	{
 		List<Account> list=accountRepository.findAll();
@@ -45,9 +53,11 @@ public class AccountService {
 	public String addAccount(Account account)
 	{
 		String result="";
+		
 		Account storedAccount=accountRepository.save(account);
 		if(storedAccount!=null) {
 			result=Results.SUCCESS;
+		
 		}
 		else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Account not created");

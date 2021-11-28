@@ -29,8 +29,8 @@ public class Account {
 	@Column(name="phone")
 	private String phone;
 	
-	@Column(name="address")
-	private String address;
+	@Column(name="adderss")
+	private String adderss;
 	
 	@Column(name="account_type")
 	private String accountType;
@@ -44,18 +44,18 @@ public class Account {
 	@Column(name="creation_date")
 	private LocalDateTime creationDate;
 
-	@Column(name="last_updated")
+	@Column(name="last_update")
 	private LocalDateTime lastUpdated;
 	
 	@Column(name="status")
 	private String status;
-	
+
 	public Account() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Account(long accountNumber, String name, String gender, String email, String phone, String address,
+	public Account(long accountNumber, String name, String gender, String email, String phone, String adderss,
 			String accountType, double balance, double creditLimit, LocalDateTime creationDate,
 			LocalDateTime lastUpdated, String status) {
 		super();
@@ -64,7 +64,7 @@ public class Account {
 		this.gender = gender;
 		this.email = email;
 		this.phone = phone;
-		this.address = address;
+		this.adderss = adderss;
 		this.accountType = accountType;
 		this.balance = balance;
 		this.creditLimit = creditLimit;
@@ -113,12 +113,12 @@ public class Account {
 		this.phone = phone;
 	}
 
-	public String getAddress() {
-		return address;
+	public String getAdderss() {
+		return adderss;
 	}
 
-	public void setAddress(String address) {
-		this.address = address;
+	public void setAdderss(String adderss) {
+		this.adderss = adderss;
 	}
 
 	public String getAccountType() {
@@ -172,13 +172,12 @@ public class Account {
 	@Override
 	public String toString() {
 		return "Account [accountNumber=" + accountNumber + ", name=" + name + ", gender=" + gender + ", email=" + email
-				+ ", phone=" + phone + ", address=" + address + ", accountType=" + accountType + ", balance=" + balance
+				+ ", phone=" + phone + ", adderss=" + adderss + ", accountType=" + accountType + ", balance=" + balance
 				+ ", creditLimit=" + creditLimit + ", creationDate=" + creationDate + ", lastUpdated=" + lastUpdated
 				+ ", status=" + status + "]";
 	}
 	
 	
-
 	
 	
 	
