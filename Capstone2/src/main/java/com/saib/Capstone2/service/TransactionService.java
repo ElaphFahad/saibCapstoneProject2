@@ -1,5 +1,7 @@
 package com.saib.Capstone2.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.saib.Capstone2.models.Account;
 import com.saib.Capstone2.models.Transaction;
 import com.saib.Capstone2.repository.TransactionRepository;
 import com.saib.Capstone2.util.Results;
@@ -25,7 +28,10 @@ public class TransactionService {
 	
 	
 	
-
+    /*
+     * Get All The Transaction
+     * 
+     * */
 	public List<Transaction> getAllTransaction()
 	{
 		List<Transaction> list=transactionRepository.findAll();
@@ -33,7 +39,9 @@ public class TransactionService {
 	
 		
 	}
-	
+	/*
+	 * Get The Transaction By Id 
+	 * */
 	
 	public Transaction getTransactionByTransactionId(long transactionId)
 	{
@@ -47,18 +55,9 @@ public class TransactionService {
 		}
 		
 	}
-	public Transaction getTransactionByTransactionType(String transactionType)
-	{
-		/**Optional<Transaction> optional=transactionRepository.findByType(transactionType);
-		
-		if(optional.isPresent()) {
-			return optional.get();
-		}
-		else {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Transaction with Transaction Number:"+transactionType+"doesn't exist");
-		}**/
-		return null;
-	}
+	/*
+	 * Add Transaction 
+	 */
 	
 	public String addTransaction(Transaction transaction)
 	{
@@ -73,6 +72,54 @@ public class TransactionService {
 		
 		return result;
 	}
+         
+	/*
+	 * Get Transaction By Transaction Type 
+	 * 
+	 * */
+	
+	public List<Transaction> getTransactionByTransactionType(String transactionType){
+		
+		
+		List<Transaction> transaction=transactionRepository.findTransactionByTransactionType(transactionType);
+		if(transaction.size()==0) {
+	 new ResponseStatusException(HttpStatus.NOT_FOUND,"No transaction found for given Type:"+transactionType);
+	
+		
+		}return transaction;
+	}
+	
+	/*
+	 * Get Transaction By Date
+	 * */
+	
+      public List<Transaction> getTransactionByDate(LocalDateTime date){
+		
+    	  List<Transaction> transaction=transactionRepository.findTransactionByDate(date);
+  		if(transaction.size()==0) {
+  	 new ResponseStatusException(HttpStatus.NOT_FOUND,"No transaction found for given Type:"+date);
+  	
+  		
+  		}return transaction;
+	}
+	/*
+	 * Delete Transaction
+	 * */
+	public String deleteTransaction(long transactionId)
+	{
+		String result="";
+	
+		transactionRepository.deleteById(transactionId);
+		
+		
+			result=Results.SUCCESS;
+			return result;
+	
+		
+	}
+	/*
+	 * Paging and Sorting 
+	 * */
 	public List<Transaction> getAllTransaction(Integer pageNo,Integer pageSize ,String sortBy)
 	{
 		Pageable paging=PageRequest.of(pageNo,pageSize, Sort.by(sortBy));

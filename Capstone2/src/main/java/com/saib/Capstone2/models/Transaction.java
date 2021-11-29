@@ -1,12 +1,13 @@
 package com.saib.Capstone2.models;
 
-import java.time.LocalTime;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 
@@ -40,13 +41,13 @@ public class Transaction {
 	private double amount;	
 
 	@Column (name ="date")
-	private LocalDate date;	
+	private LocalDateTime date;	
 
 	@Column (name ="time")
-	private LocalTime time;	
+	private LocalDateTime time;	
 
 	@Column (name ="transaction_type")
-	private String transaction_type	;
+	private String transactionType	;
 	   
     @Column (name ="status")
 	private String status;
@@ -58,7 +59,7 @@ public class Transaction {
 
 	public Transaction(long transaction_id, long from_account, long to_account, String from_account_name,
 			String to_account_name, String same_bank_transaction, String other_bank_transaction, double amount,
-			LocalDate date, LocalTime time, String transaction_type, String status) {
+			LocalDateTime date, LocalDateTime time, String transaction_type, String status) {
 		super();
 		this.transactionId = transaction_id;
 		this.from_account = from_account;
@@ -70,7 +71,7 @@ public class Transaction {
 		this.amount = amount;
 		this.date = date;
 		this.time = time;
-		this.transaction_type = transaction_type;
+		this.transactionType = transaction_type;
 		this.status = status;
 	}
 
@@ -138,28 +139,28 @@ public class Transaction {
 		this.amount = amount;
 	}
 
-	public LocalDate getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(LocalDate date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 
-	public LocalTime getTime() {
+	public LocalDateTime getTime() {
 		return time;
 	}
 
-	public void setTime(LocalTime time) {
+	public void setTime(LocalDateTime time) {
 		this.time = time;
 	}
 
 	public String getTransaction_type() {
-		return transaction_type;
+		return transactionType;
 	}
 
 	public void setTransaction_type(String transaction_type) {
-		this.transaction_type = transaction_type;
+		this.transactionType = transaction_type;
 	}
 
 	public String getStatus() {
@@ -176,7 +177,7 @@ public class Transaction {
 				+ to_account + ", from_account_name=" + from_account_name + ", to_account_name=" + to_account_name
 				+ ", same_bank_transaction=" + same_bank_transaction + ", other_bank_transaction="
 				+ other_bank_transaction + ", amount=" + amount + ", date=" + date + ", time=" + time
-				+ ", transaction_type=" + transaction_type + ", status=" + status + "]";
+				+ ", transaction_type=" + transactionType + ", status=" + status + "]";
 	}
     
     

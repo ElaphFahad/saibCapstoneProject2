@@ -1,12 +1,10 @@
 package com.saib.Capstone2.service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,8 +15,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.saib.Capstone2.models.Account;
 import com.saib.Capstone2.repository.AccountRepository;
-
 import com.saib.Capstone2.util.Results;
+
+
 
 @Service
 public class AccountService {
@@ -26,12 +25,6 @@ public class AccountService {
 	@Autowired
 	AccountRepository accountRepository;
 	
-	
-	public AccountService(@Qualifier("Account")AccountRepository repository) {
-		this.accountRepository=repository;
-		// TODO Auto-generated constructor stub
-	}
-
 	public List<Account> getAllAccount()
 	{
 		List<Account> list=accountRepository.findAll();
@@ -57,11 +50,9 @@ public class AccountService {
 	public String addAccount(Account account)
 	{
 		String result="";
-		
 		Account storedAccount=accountRepository.save(account);
 		if(storedAccount!=null) {
 			result=Results.SUCCESS;
-		
 		}
 		else {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Account not created");
@@ -83,6 +74,7 @@ public class AccountService {
 		}
 		else
 		{
+			
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Record was not updated");
 		}
 		return result;
@@ -92,31 +84,36 @@ public class AccountService {
 	public String deleteAccount(long accountNumber)
 	{
 		String result="";
-		try {
+	
 		accountRepository.deleteById(accountNumber);
 		
 		
 			result=Results.SUCCESS;
 			return result;
-		}
-		catch (Exception e) {
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-		}
-		
+	
 		
 	}
 	
+	public List<Account> getAccountsByGender(String gender){
+		
+		
+		List<Account> accounts=accountRepository.findAccountByGender(gender);
+		if(accounts.size()==0) {
+	 new ResponseStatusException(HttpStatus.NOT_FOUND,"No account details found for given gender:"+gender);
 	
-	public List<Account> getAllAccount(Integer pageNo,Integer pageSize ,String sortBy)
+		
+		}return accounts;
+	}
+	
+	public List<Account> getAllAccount(Integer pageNo,Integer pageSize)
 	{
-		Pageable paging=PageRequest.of(pageNo,pageSize, Sort.by(sortBy));
+		Pageable paging=PageRequest.of(pageNo,pageSize);
+	
 		
 		Page<Account> pagedResult=accountRepository.findAll(paging);
-		int totalElement=pagedResult.getNumberOfElements();
+		int totalElements=pagedResult.getNumberOfElements();
 		int total=pagedResult.getTotalPages();
-		
-		System.out.println("Total Number of pages are:"+total+"| Total Elements:"+totalElement);
-	
+		System.out.println("Total Number of Pages are:"+total+" | Total Elements:"+totalElements);
 		
 		if(pagedResult.hasContent())
 		{
@@ -129,5 +126,25 @@ public class AccountService {
 		
 	}
 	
+	public List<Account> getAllAccount(Integer pageNo,Integer pageSize, String sortBy)
+	{
+		Pageable paging=PageRequest.of(pageNo,pageSize,Sort.by(sortBy));
+	
+		
+		Page<Account> pagedResult=accountRepository.findAll(paging);
+		int totalElements=pagedResult.getNumberOfElements();
+		int total=pagedResult.getTotalPages();
+		System.out.println("Total Number of Pages are:"+total+" | Total Elements:"+totalElements);
+		
+		if(pagedResult.hasContent())
+		{
+			return pagedResult.getContent();
+		}
+		else
+		{
+			return new ArrayList<Account>();
+		}
+		
+	}
 
 }
