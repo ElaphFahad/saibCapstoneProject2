@@ -29,6 +29,8 @@ public class TransactionController {
 	 *  GET - /transactions - Get me all transaction 
 	 *  GET - /transactions/id - Get me details for a single transaction 
 	 *   GET - /transactions/type - Get me details for a single transaction by type
+	 *   GET - /transactions/date - Get me details for a single transaction by date
+	 *   GET - /transactions/getByDateAndType - Get me details for a single transaction by type and date
 	 *  POST - /transactions - Creating a new transaction 
 	 *  PUT - /delete/id -
 	 *  DELETE -/transactions/id - for deleting an transaction from db
@@ -42,11 +44,11 @@ public class TransactionController {
 	 *  GET - /transactions - Get me all transaction 
 	 * */
 	@GetMapping("/transactions")
-	public ResponseEntity<ApiSuccessTransaction> getAllTransactions(){
+	public ResponseEntity<ApiSuccessPayload> getAllTransactions(){
 		List<Transaction> list=transactionService.getAllTransaction();
 		
-		ApiSuccessTransaction payload=ApiSuccessTransaction.build(list, "Transaction Fetched", HttpStatus.OK);
-		ResponseEntity<ApiSuccessTransaction> response=new ResponseEntity<ApiSuccessTransaction>(payload,HttpStatus.OK);
+		ApiSuccessPayload payload=ApiSuccessPayload.build(list, "Transaction Fetched", HttpStatus.OK);
+		ResponseEntity<ApiSuccessPayload> response=new ResponseEntity<ApiSuccessPayload>(payload,HttpStatus.OK);
 		
 		return response;
 		
@@ -56,12 +58,11 @@ public class TransactionController {
 	 *  GET - /transactions/id - Get me details for a single transaction  by its ID
 	 * */
 	
-	@GetMapping("/transactions/TransactionId/{transactionId}")
-	public ResponseEntity<ApiSuccessTransaction> getTransactionByTransactionId(@PathVariable long transactionId) {
+	@GetMapping("/transactions/transactionId/{transactionId}")
+	public ResponseEntity<ApiSuccessPayload> getTransactionByTransactionId(@PathVariable long transactionId) {
 		Transaction transaction=transactionService.getTransactionByTransactionId(transactionId);
-		
-		ApiSuccessTransaction payload=ApiSuccessTransaction.build(transaction, "Success",HttpStatus.OK);
-		ResponseEntity<ApiSuccessTransaction> response=new ResponseEntity<ApiSuccessTransaction>(payload,HttpStatus.OK);
+		ApiSuccessPayload payload=ApiSuccessPayload.build(transaction, "Success",HttpStatus.OK);
+		ResponseEntity<ApiSuccessPayload> response=new ResponseEntity<ApiSuccessPayload>(payload,HttpStatus.OK);
 		return response;
 	      }
 	
@@ -69,7 +70,7 @@ public class TransactionController {
 	 *   GET - /transactions/type - Get me details for a single transaction by type
 	 * */
 	
-	@GetMapping("/transactions/TransactionType/{transactionType}")
+	@GetMapping("/transactions/transactionType/{transactionType}")
 	
 	public ResponseEntity<ApiSuccessPayload> getTransactionByTransactionType(@PathVariable String transactionType)
 	
@@ -118,15 +119,15 @@ public class TransactionController {
 	 * */
 	
 	@PostMapping("/transactions")
-	public ResponseEntity<ApiSuccessTransaction> addTransaction(@RequestBody Transaction transaction)
+	public ResponseEntity<ApiSuccessPayload> addTransaction(@RequestBody Transaction transaction)
 	{
-		ResponseEntity<ApiSuccessTransaction> response=null;
+		ResponseEntity<ApiSuccessPayload> response=null;
 		System.out.println(transaction);
 		String result=transactionService.addTransaction(transaction);
 		if(result.equalsIgnoreCase(Results.SUCCESS))
 		{
-			ApiSuccessTransaction payload=ApiSuccessTransaction.build(result, "Transaction created successfully", HttpStatus.CREATED);
-			response=new ResponseEntity<ApiSuccessTransaction>(payload,HttpStatus.CREATED);
+			ApiSuccessPayload payload=ApiSuccessPayload.build(result, "Transaction created successfully", HttpStatus.CREATED);
+			response=new ResponseEntity<ApiSuccessPayload>(payload,HttpStatus.CREATED);
 		}
 		
 		return response;
@@ -136,18 +137,25 @@ public class TransactionController {
 	 *  PUT - /delete/id -
 	 * */
 	@PutMapping("/delete/{transactionId}")
-	public ResponseEntity<ApiSuccessTransaction> updateTransaction(@RequestBody Transaction transaction, @PathVariable long transactionId)
+	public ResponseEntity<ApiSuccessPayload> updateTransaction(@RequestBody Transaction transaction, @PathVariable long transactionId)
 	{
-		return null;
+		String result=transactionService.updateTransaction(transaction, transactionId);
+		ApiSuccessPayload payload=ApiSuccessPayload.build(result,result,HttpStatus.OK);
+		ResponseEntity<ApiSuccessPayload> response=new ResponseEntity<ApiSuccessPayload>(payload, HttpStatus.OK);
+		return response;
 	}
+	
 	/*
 	 *  DELETE -/transactions/id - for deleting an transaction from db
 	 * 
 	 * */
 	@DeleteMapping("/transactions/{transactionId}")
-	public ResponseEntity<ApiSuccessTransaction> deleteTransaction(@PathVariable long transactionId)
+	public ResponseEntity<ApiSuccessPayload> deleteTransaction(@PathVariable long transactionId)
 	{
-		return null;
+		String result=transactionService.deleteTransaction(transactionId);
+	ApiSuccessPayload payload=ApiSuccessPayload.build(result,result,HttpStatus.OK);
+	ResponseEntity<ApiSuccessPayload> response=new ResponseEntity<ApiSuccessPayload>(payload, HttpStatus.OK);
+	return response;
 	}
 	
 	/*

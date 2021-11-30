@@ -39,6 +39,7 @@ public class TransactionService {
 	
 		
 	}
+	
 	/*
 	 * Get The Transaction By Id 
 	 * */
@@ -113,6 +114,27 @@ public class TransactionService {
     	  List<Transaction> transactions=transactionRepository.findTransactionByDateAndTransactionType(date, transactionType);
     	  return transactions;
       }
+      
+      public String updateTransaction(Transaction transaction,  long transactionId)
+  	{
+  		String result="";
+  		
+  		transaction.setTransaction_id(transactionId);
+  		Transaction updateTransaction=transactionRepository.save(transaction);
+  		
+  		if(updateTransaction!=null)
+  		{
+  			result=Results.SUCCESS;
+  		}
+  		else
+  		{
+  			
+  			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Record was not updated");
+  		}
+  		return result;
+  		
+  	}
+  	
      
       
       
