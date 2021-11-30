@@ -23,5 +23,10 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
      * */
 	public List<Transaction> findTransactionByDate(LocalDateTime date);
 	
+	/*
+	 *to find transaction by its type and date
+	 * */
+	 public List<Transaction> findTransactionByDateAndTransactionType(LocalDateTime date,String transactionType);
+	
 
 }

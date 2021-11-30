@@ -1,6 +1,6 @@
 package com.saib.Capstone2.controller;
 
-import java.time.LocalDate;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -42,8 +42,7 @@ public class TransactionController {
 	 *  GET - /transactions - Get me all transaction 
 	 * */
 	@GetMapping("/transactions")
-	public ResponseEntity<ApiSuccessTransaction> getAllTransactions()
-	{
+	public ResponseEntity<ApiSuccessTransaction> getAllTransactions(){
 		List<Transaction> list=transactionService.getAllTransaction();
 		
 		ApiSuccessTransaction payload=ApiSuccessTransaction.build(list, "Transaction Fetched", HttpStatus.OK);
@@ -51,21 +50,20 @@ public class TransactionController {
 		
 		return response;
 		
-	}
+	         }
 	
 	/*
 	 *  GET - /transactions/id - Get me details for a single transaction  by its ID
 	 * */
 	
 	@GetMapping("/transactions/TransactionId/{transactionId}")
-	public ResponseEntity<ApiSuccessTransaction> getTransactionByTransactionId(@PathVariable long transactionId)
-	{
+	public ResponseEntity<ApiSuccessTransaction> getTransactionByTransactionId(@PathVariable long transactionId) {
 		Transaction transaction=transactionService.getTransactionByTransactionId(transactionId);
 		
 		ApiSuccessTransaction payload=ApiSuccessTransaction.build(transaction, "Success",HttpStatus.OK);
 		ResponseEntity<ApiSuccessTransaction> response=new ResponseEntity<ApiSuccessTransaction>(payload,HttpStatus.OK);
 		return response;
-	}
+	      }
 	
 	/*
 	 *   GET - /transactions/type - Get me details for a single transaction by type
@@ -99,6 +97,21 @@ public class TransactionController {
 		ResponseEntity<ApiSuccessPayload> response=new ResponseEntity<ApiSuccessPayload>(payload, status);
 		return response;
 	}
+	
+	/*
+	 * GEt- /transactions/transactionByTypeAndDate
+	 * */
+     @GetMapping("/transactions/getByDateAndType/{transactionType}/{date}")
+     public ResponseEntity<ApiSuccessPayload> getTransactionByDateAndType(@RequestParam @DateTimeFormat (pattern = "yyyy-MM-dd HH:mm:ss")LocalDateTime date,
+    		 @PathVariable String transactionType ){
+    	 List<Transaction> list= transactionService.getTransactionByDateAndType(date, transactionType);
+    	 ApiSuccessPayload payload=ApiSuccessPayload.build(list, "Success", HttpStatus.OK);
+    	 ResponseEntity<ApiSuccessPayload> response=new ResponseEntity<ApiSuccessPayload>(payload,HttpStatus.OK);
+    	 return response;
+     }
+   
+
+	
 	/*
 	 * 
 	 *  POST - /transactions - Creating a new transaction 

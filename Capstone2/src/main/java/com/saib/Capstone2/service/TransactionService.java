@@ -96,12 +96,26 @@ public class TransactionService {
       public List<Transaction> getTransactionByDate(LocalDateTime date){
 		
     	  List<Transaction> transaction=transactionRepository.findTransactionByDate(date);
+    	  
   		if(transaction.size()==0) {
   	 new ResponseStatusException(HttpStatus.NOT_FOUND,"No transaction found for given Type:"+date);
   	
   		
-  		}return transaction;
+  		}
+  		return transaction;
 	}
+     
+      /*
+       * Get transaction by type and date 
+       * 
+       * */
+      public List<Transaction>getTransactionByDateAndType(LocalDateTime date,String transactionType){
+    	  List<Transaction> transactions=transactionRepository.findTransactionByDateAndTransactionType(date, transactionType);
+    	  return transactions;
+      }
+     
+      
+      
 	/*
 	 * Delete Transaction
 	 * */
