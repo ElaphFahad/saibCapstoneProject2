@@ -136,7 +136,7 @@ public class TransactionController {
 	/*
 	 *  PUT - /delete/id -
 	 * */
-	@PutMapping("/delete/{transactionId}")
+	@PutMapping("/update/{transactionId}")
 	public ResponseEntity<ApiSuccessPayload> updateTransaction(@RequestBody Transaction transaction, @PathVariable long transactionId)
 	{
 		String result=transactionService.updateTransaction(transaction, transactionId);
